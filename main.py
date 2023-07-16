@@ -93,7 +93,6 @@ def check_image_similarity(img_dir: str, contour_threshold: int):
     return similarity_dict
 
 
-
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
