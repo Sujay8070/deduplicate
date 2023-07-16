@@ -7,8 +7,8 @@ import similarity_utils as su
 
 
 def similarity_score(image_1, image_2, tolerance):
-    gray1 = su.preprocess_image_change_detection(image_1, [3,5,7])
-    gray2 = su.preprocess_image_change_detection(image_2, [3,5,7])    
+    gray1 = su.preprocess_image_change_detection(image_1, [5,7,11])
+    gray2 = su.preprocess_image_change_detection(image_2, [5,7,11])
     sim_score, _, _ = su.compare_frames_change_detection(gray1, gray2, tolerance)
     
     return sim_score
@@ -44,17 +44,17 @@ def check_image_similarity(img_dir: str, contour_threshold: int):
         if file.endswith(".jpg") or file.endswith(".png"):
             im_arr = cv2.imread(os.path.join(img_dir,file))
             
-            # an image should be readable and at least 64x64
+            # an image should be readable and at least 32x32
             if im_arr is None:
                 print(f"\tError opening file: {file}")
                 corrupt_files.append(file)
                 continue
-            elif im_arr.size < 4096:
+            elif im_arr.size < 1024:
                 print(f"\tInsufficient image-size: {file}")
                 continue
 
-            im_resized = cv2.resize(im_arr, 
-                                    new_im_size, 
+            im_resized = cv2.resize(im_arr,
+                                    new_im_size,
                                     interpolation = cv2.INTER_AREA)
             im_arr_ls.append(im_resized)
             file_name_ls.append(file)
@@ -97,7 +97,7 @@ def check_image_similarity(img_dir: str, contour_threshold: int):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p", "--path", type=os.path.abspath, 
+    parser.add_argument("-p", "--path", type=os.path.abspath, required=True,
                         help="Provide absolute path to the image folder")
     parser.add_argument("-a", "--min_contour_area", type=int, default=5000,
                         help="Provide minimum area of pixels to differentiate two images")
