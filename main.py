@@ -7,10 +7,10 @@ import similarity_utils as su
 
 
 def similarity_score(image_1, image_2, tolerance):
-    gray1 = su.preprocess_image_change_detection(image_1, [5, 11, 15])
-    gray2 = su.preprocess_image_change_detection(image_2, [5, 11, 15])
+    gray1 = su.preprocess_image_change_detection(image_1, [5, 7, 11])
+    gray2 = su.preprocess_image_change_detection(image_2, [5, 7, 11])
     sim_score, _, _ = su.compare_frames_change_detection(gray1, gray2, tolerance)
-    
+
     return sim_score
 
 def check_image_similarity(img_dir: str, contour_threshold: int):
@@ -39,11 +39,11 @@ def check_image_similarity(img_dir: str, contour_threshold: int):
     if len(os.listdir(img_dir)) == 0:
         warnings.warn("\tThe image folder is EMPTY!", UserWarning)
         return unique_im_arr_ls
-       
+     
     for file in os.listdir(img_dir):
         if file.endswith(".jpg") or file.endswith(".png"):
             im_arr = cv2.imread(os.path.join(img_dir,file))
-            
+           
             # an image should be readable and at least 64x64
             if im_arr is None:
                 print(f"\tError opening file: {file}")
@@ -75,7 +75,7 @@ def check_image_similarity(img_dir: str, contour_threshold: int):
                 is_similar = True
                 similarity_dict['duplicate_image_files'].append(filename)
                 continue
-                        
+                      
         ## check similarity with all unique images
         for uniq_im in unique_im_arr_ls:
             sim_score = similarity_score(im_arr_ls[idx], 
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     im_similarity_dict = check_image_similarity(args.path, args.min_contour_area)
-    
+       
     shutil.rmtree(args.path + '/unique', ignore_errors=True)
     os.makedirs(args.path + '/unique')
     for i, im_file in enumerate(im_similarity_dict['unique_image_files']):
