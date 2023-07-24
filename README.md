@@ -2,7 +2,7 @@
 Offline Perception processing to remove duplicate image frames.
 
 To eliminate similar frames, run the following command in your CLI. 
-Provide your local path of image-folder (str) and the desired contour area (int).
+Provide your local path of image-folder (str) and the desired contour area (int). A decent result can be obtained with 'minimum contour area' argument = 500. 
 
 ```
 python main.py -p <image folder path> -a <minimum contour area>
